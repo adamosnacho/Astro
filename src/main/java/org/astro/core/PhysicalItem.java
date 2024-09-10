@@ -1,5 +1,8 @@
 package org.astro.core;
 
+import org.astro.core.saving.Savable;
+import org.astro.core.saving.SaveManager;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -12,7 +15,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhysicalItem extends Entity implements TipEntity, Serializable {
+public class PhysicalItem extends Entity implements TipEntity, Savable {
     public final String imagePath;
     private final GamePanel gp;
     public transient BufferedImage sprite;
@@ -37,6 +40,7 @@ public class PhysicalItem extends Entity implements TipEntity, Serializable {
             e.printStackTrace();
         }
         gp.tipManager.tipEntities.add(this);
+        SaveManager.register(this);
     }
 
     private PhysicalItem(PhysicalItem i) {
@@ -55,6 +59,7 @@ public class PhysicalItem extends Entity implements TipEntity, Serializable {
             e.printStackTrace();
         }
         gp.tipManager.tipEntities.add(this);
+        SaveManager.register(this);
     }
     public PhysicalItem copy() {
         return new PhysicalItem(this);
@@ -129,5 +134,24 @@ public class PhysicalItem extends Entity implements TipEntity, Serializable {
     @Override
     public void deSpawn() {
         gp.tipManager.tipEntities.remove(this);
+        SaveManager.deRegister(this);
+    }
+
+    record savableItem(int x, int y, List<String> data, List<List<String>> secondData) implements Serializable {
+    }
+
+    @Override
+    public Object save() {
+        return new savableItem(x, y, data, secondData);
+    }
+
+    @Override
+    public void load(Object o) {
+        savableItem i = (savableItem) o;
+        x = i.x;
+        y = i.y;
+        data = i.data;
+        secondData = i.secondData;
+        System.out.println("garbage");
     }
 }
