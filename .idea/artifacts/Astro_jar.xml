@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Astro:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Astro_jar</output-path>
+    <root id="archive" name="Astro.jar">
+      <element id="module-output" name="Astro" />
+    </root>
+  </artifact>
+</component>
