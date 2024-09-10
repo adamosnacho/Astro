@@ -34,7 +34,7 @@ public class Drill extends Entity implements BreakableTileEntity, TipEntity, Ser
         } catch (IOException e) {
             e.printStackTrace();
         }
-        t = new Timer(digRate, _ -> dropItem());
+        t = new Timer(digRate, s -> dropItem());
         t.start();
         lastDigTime = System.currentTimeMillis();
         gp.tipManager.tipEntities.add(this);

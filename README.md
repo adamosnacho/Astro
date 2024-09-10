@@ -11,4 +11,4 @@ The saving.Savable interface has 2 functions load and save, in the load function
   <li>add a physical item object to the physicalItemsP map in Items.java wich will represent the item when it is "on the floor"</li>
   <li>add a description of the item to the itemDescriptions map in Items.java</li>
 </ul>
-</p>
+
