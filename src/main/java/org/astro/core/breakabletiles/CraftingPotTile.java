@@ -13,7 +13,10 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.*;
 
 public class CraftingPotTile extends BreakableTile implements Save {
@@ -37,13 +40,15 @@ public class CraftingPotTile extends BreakableTile implements Save {
     private static final int craftingTime = ClassSettings.loadInt("crafting pot tile/crafting time", 1000);
 
     public static void baseRecipes() {
-        recipes.add(new Recipe(new ArrayList<>(List.of(new String[] {"rock", "rock", "rock", "rock", "stick", "stick"})), "rock_hammer"));
-        recipes.add(new Recipe(new ArrayList<>(List.of(new String[] {"lead", "lead", "lead", "lead", "stick", "stick"})), "lead_pickaxe"));
-        recipes.add(new Recipe(new ArrayList<>(List.of(new String[] {"rock", "rock", "rock", "rock", "stick", "stick", "rope", "rope"})), "drill"));
-        recipes.add(new Recipe(new ArrayList<>(List.of(new String[] {"rope", "rope", "rope", "rope", "rope", "rope", "stick", "stick"})), "bag"));
-        recipes.add(new Recipe(new ArrayList<>(List.of(new String[] {"stick", "stick"})), "spoon"));
-        recipes.add(new Recipe(new ArrayList<>(List.of(new String[] {"ash", "ash", "ash", "stick"})), "rope"));
-        recipes.add(new Recipe(new ArrayList<>(List.of(new String[] {"stick", "stick", "stick", "stick"})), "plank"));
+        File recDir = new File("rec");
+        for (File rec : Objects.requireNonNull(recDir.listFiles())) {
+            try {
+                List<String> ingredients = Files.readAllLines(rec.toPath());
+                recipes.add(new Recipe(ingredients, rec.getName().replace(".craft", "")));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public CraftingPotTile(float x, float y) {

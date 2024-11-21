@@ -93,7 +93,7 @@ public class WoodWorkingTableTile extends BreakableTile implements Save {
                 for (int y = 0; y < cutting.getHeight() - 1; y++) {
                     try {
                         colors.add(cutting.getColor(x, y));
-                    } catch (ArrayIndexOutOfBoundsException _) {}
+                    } catch (ArrayIndexOutOfBoundsException e) {}
                 }
             }
 
