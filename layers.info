@@ -1,0 +1,5 @@
+player z = 1
+breakable tile z = -2
+enemies = 0
+items = z = -1
+shadows = z -10

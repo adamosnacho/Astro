@@ -1,0 +1,2 @@
+Build compiled classes to a .jar
+& "C:\Program Files\Java\jdk-22\bin\jar.exe" cfm Astro.jar MANIFEST.MF -C out/production/Astro .
