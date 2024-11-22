@@ -45,21 +45,23 @@ with open(os.path.join(folder, "worldInfo.s"), "w") as f:
 
 # Handle platform-specific files
 if plat == "win":
-    # Create the Windows batch script
+    shutil.copytree("jre/jdk-17win", os.path.join(folder, "jdk-17win"))
     with open(os.path.join(folder, "run-astro.bat"), "w") as f:
         f.write(f'cd /d "%~dp0"\n')
-        f.write(f'java -Djava.library.path=lib\\natives-windows -jar "Astro {ver} - {plat}.jar"')
+        f.write(f'jdk-17win\\bin\\java.exe -Djava.library.path=lib\\natives-windows -jar "Astro {ver} - {plat}.jar"')
 elif plat == "lin":
+    shutil.copytree("jre/jdk-17lin", os.path.join(folder, "jdk-17lin"))
     # Create the Linux shell script
     with open(os.path.join(folder, "run-astro.sh"), "w") as f:
         f.write('#!/bin/bash\n')
         f.write('cd "$(dirname "$0")"\n')
-        f.write(f'java -Djava.library.path=lib/natives-linux -jar "Astro {ver} - {plat}.jar"\n')
+        f.write(f'jdk-17lin/bun/java -Djava.library.path=lib/natives-linux -jar "Astro {ver} - {plat}.jar"\n')
 elif plat == "mac":
+    shutil.copytree("jre/jdk-17mac", os.path.join(folder, "jdk-17mac"))
     # Create the macOS shell script
     with open(os.path.join(folder, "run-astro.sh"), "w") as f:
         f.write('#!/bin/bash\n')
         f.write('cd "$(dirname "$0")"\n')
-        f.write(f'java -Djava.library.path=lib/natives-mac -jar "Astro {ver} - {plat}.jar"\n')
+        f.write(f'jdk-17mac/Contents/Home/bin/java -Djava.library.path=lib/natives-mac -jar "Astro {ver} - {plat}.jar"\n')
 else:
     print("Unsupported platform. Please choose win, mac, or lin.")
