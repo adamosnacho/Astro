@@ -16,7 +16,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Torch extends ItemTemplate {
-    public static final int animationSpeed = 150;
+    public static final int animationSpeed = ClassSettings.loadInt("torch/animation speed", 150);
+    public static final int burnoutTime = ClassSettings.loadInt("torch/burn out time", 80000);
     private final SpriteSheet spriteSheet;
 
     public Torch() {
@@ -120,7 +121,7 @@ public class Torch extends ItemTemplate {
             boolean lit = false;
             private int time = 0;
             private int animationFrame = 0;
-            private int timeLeft = 80000;
+            private int timeLeft = burnoutTime;
         }
     }
 }

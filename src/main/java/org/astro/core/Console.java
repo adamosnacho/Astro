@@ -24,7 +24,7 @@ public class Console {
             public void keyPressed(int i, char c) {
                 if (active) {
                     // Check if the pressed key corresponds to a typable character
-                    if (Character.isLetterOrDigit(c) || Character.isLetter(c) || c == ' ' || c == '_') {
+                    if (Character.isLetterOrDigit(c) || Character.isLetter(c) || c == ' ' || c == '_' || c == '.') {
                         command += c;
                     }
 
@@ -69,7 +69,7 @@ public class Console {
         g.setColor(new Color(100, 100, 100, 150));
         g.fillRect(0, 0, Astro.astro.camera.width, Astro.astro.camera.height);
         g.setColor(new Color(255, 255, 255));
-        g.drawString("Command - " + command, x, Astro.astro.camera.height - y);
+        g.drawString("Command > " + command, x, Astro.astro.camera.height - y);
         g.setFont(Astro.font);
     }
 
@@ -105,10 +105,12 @@ public class Console {
             else new Item(Items.items.get(t[1].replace(" ", "")), Astro.astro.player.x, Astro.astro.player.y);
         }
         if (t[0].contains("save")) Saving.save();
-        if (t[0].contains("load")) Saving.load();
         if (t[0].contains("exit")) {
-            Saving.save();
-            Astro.app.exit();
+            if (t.length > 1 && t[1].contains("nosave")) Astro.app.exit();
+            else {
+                Saving.save();
+                Astro.app.exit();
+            }
         }
         if (t[0].contains("test1")) new Alien(Astro.astro.player.x + 200, Astro.astro.player.y);
         if (t[0].contains("test2")) new Shrimp(Astro.astro.player.x + 200, Astro.astro.player.y);

@@ -1,9 +1,6 @@
 package org.astro.core.items;
 
-import org.astro.core.Astro;
-import org.astro.core.BreakableTile;
-import org.astro.core.PlayerInventory;
-import org.astro.core.Utils;
+import org.astro.core.*;
 import org.astro.core.itemsystem.Item;
 import org.astro.core.particlesystem.Particle;
 import org.astro.core.particlesystem.ParticleGroup;
@@ -19,7 +16,7 @@ public class LeadPickaxe extends PickaxeTemplate {
 
     @Override
     public void onPickaxeUsed(Item item, BreakableTile bt) {
-        item.itemData = (int) item.itemData - 20;
+        item.itemData = (int) item.itemData - ClassSettings.loadInt("lead pickaxe/wear per item", 10);
         if ((int) item.itemData <= 0) {
             PlayerInventory.hand.it.itemEvents.inHand(false, PlayerInventory.hand);
             PlayerInventory.hand.destroy();

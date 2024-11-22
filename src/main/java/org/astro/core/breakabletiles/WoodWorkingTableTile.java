@@ -32,6 +32,7 @@ public class WoodWorkingTableTile extends BreakableTile implements Save {
     public static void baseDropTable() {
         dropTable.put("plank", new Drop("stick", 4));
         dropTable.put("torch", new Drop("stick", 1));
+        dropTable.put("stick", new Drop("torch", 1));
     }
 
     public WoodWorkingTableTile(float x, float y) {
