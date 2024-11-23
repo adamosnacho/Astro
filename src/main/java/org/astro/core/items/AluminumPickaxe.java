@@ -2,6 +2,7 @@ package org.astro.core.items;
 
 import org.astro.core.*;
 import org.astro.core.itemsystem.Item;
+import org.astro.core.itemsystem.Items;
 import org.astro.core.particlesystem.Particle;
 import org.astro.core.particlesystem.ParticleGroup;
 import org.newdawn.slick.Color;
@@ -9,14 +10,14 @@ import org.newdawn.slick.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeadPickaxe extends PickaxeTemplate {
-    public LeadPickaxe() {
-        super("lead_pickaxe", "art/png/leadPickaxe.png");
+public class AluminumPickaxe extends PickaxeTemplate {
+    public AluminumPickaxe() {
+        super("aluminum_pickaxe", "art/png/aluminumPickaxe.png");
     }
 
     @Override
     public void onPickaxeUsed(Item item, BreakableTile bt) {
-        item.itemData = (int) item.itemData - ClassSettings.loadInt("lead pickaxe/wear per breakable tile", 10);
+        item.itemData = (int) item.itemData - ClassSettings.loadInt("aluminum pickaxe/wear per breakable tile", 2);
         if ((int) item.itemData <= 0) {
             PlayerInventory.hand.it.itemEvents.inHand(false, PlayerInventory.hand);
             PlayerInventory.hand.destroy();
@@ -43,7 +44,7 @@ public class LeadPickaxe extends PickaxeTemplate {
 
     @Override
     public void onPickaxeUsedTile(Item item, Terrain.Tile t) {
-        item.itemData = (int) item.itemData - ClassSettings.loadInt("lead pickaxe/wear per terrain tile", 3);
+        item.itemData = (int) item.itemData - ClassSettings.loadInt("aluminum pickaxe/wear per terrain tile", 1);
         if ((int) item.itemData <= 0) {
             PlayerInventory.hand.it.itemEvents.inHand(false, PlayerInventory.hand);
             PlayerInventory.hand.destroy();
@@ -66,6 +67,8 @@ public class LeadPickaxe extends PickaxeTemplate {
             p.setSize(10, 10);
             return p;
         }, 50);
+
+        new Item(Items.items.get("matter"), Astro.app.getInput().getMouseX() + Astro.astro.camera.x - 20, Astro.app.getInput().getMouseY() + Astro.astro.camera.y - 20);
     }
 
     @Override
@@ -75,6 +78,6 @@ public class LeadPickaxe extends PickaxeTemplate {
 
     @Override
     public String pickaxeStatus(Item i) {
-        return "Lead pickaxe\nWear " + i.itemData + "%";
+        return "Aluminum pickaxe\nWear " + i.itemData + "%";
     }
 }

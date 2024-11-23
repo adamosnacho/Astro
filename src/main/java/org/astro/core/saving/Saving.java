@@ -23,8 +23,11 @@ public class Saving {
             throw new RuntimeException("Error creating directories", e);
         }
 
-        // Save each object in the 'save' set
-        for (Save s : save) {
+        for (Save s : new ArrayList<>(save)) {
+            s.aboutToSave();
+        }
+
+        for (Save s : new ArrayList<>(save)) {
             String filename = world + "/data/" + s.getClass().getName();
             File f = new File(filename + "-0");
             int i = 1;
