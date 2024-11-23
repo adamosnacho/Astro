@@ -1,4 +1,4 @@
-#A stro
+# Astro
 By Adam Ryan
 
 ### Astro is a 2D top-down survival sandbox. Gathering scarce resources is key to survival. Defeat the bosses and repair your lander to escape mars and return to earth.
