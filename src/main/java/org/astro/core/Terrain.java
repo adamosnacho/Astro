@@ -1,5 +1,6 @@
 package org.astro.core;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -47,8 +48,8 @@ public class Terrain {
         }
     }
 
-    public static void registerTile(Image sprite, boolean solid, String name) {
-        tiles.add(new Tile(sprite, solid, name));
+    public static void registerTile(Image sprite, boolean solid, String name, Color color) {
+        tiles.add(new Tile(sprite, solid, name, color));
     }
 
     public static void draw(Graphics g) {
@@ -108,7 +109,6 @@ public class Terrain {
             }
         }
 
-        // Check for chunks that are not in the loadedKeys set and unload them
         loadedChunks.keySet().removeIf(chunkKey -> {
             if (!loadedKeys.containsKey(chunkKey)) {
                 loadedChunks.get(chunkKey).unload(); // Unload the chunk
@@ -119,12 +119,12 @@ public class Terrain {
     }
 
     public static void registerTiles() throws SlickException {
-        registerTile(new Image("art/png/tiles/mars.png", false, Image.FILTER_NEAREST), false, "mars");
-        registerTile(new Image("art/png/tiles/mars-var.png", false, Image.FILTER_NEAREST), false, "mars");
-        registerTile(new Image("art/png/tiles/lead.png", false, Image.FILTER_NEAREST), false, "lead");
-        registerTile(new Image("art/png/tiles/aluminum.png", false, Image.FILTER_NEAREST), false, "aluminum");
-        registerTile(new Image("art/png/tiles/wall.png", false, Image.FILTER_NEAREST), true, "wall");
-        registerTile(new Image("art/png/tiles/stone.png", false, Image.FILTER_NEAREST), true, "stone");
+        registerTile(new Image("art/png/tiles/mars.png", false, Image.FILTER_NEAREST), false, "mars", new Color(255, 140, 0));
+        registerTile(new Image("art/png/tiles/mars-var.png", false, Image.FILTER_NEAREST), false, "mars", new Color(255, 140, 0));
+        registerTile(new Image("art/png/tiles/lead.png", false, Image.FILTER_NEAREST), false, "lead", new Color(255, 216, 143));
+        registerTile(new Image("art/png/tiles/aluminum.png", false, Image.FILTER_NEAREST), false, "aluminum", new Color(214, 163, 255));
+        registerTile(new Image("art/png/tiles/wall.png", false, Image.FILTER_NEAREST), true, "wall", new Color(255, 72, 0));
+        registerTile(new Image("art/png/tiles/stone.png", false, Image.FILTER_NEAREST), true, "stone", new Color(92, 92, 92));
     }
 
     public static Tile getTile(int x, int y) {
@@ -139,15 +139,34 @@ public class Terrain {
         return tiles.get(c.getTerrain()[x % chunkWidth][y % chunkHeight]);
     }
 
+    public static void setTile(int x, int y, Tile tile) {
+        int index = 0;
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i) == tile) index = i;
+        }
+
+        if (loadedChunks.containsKey(x / chunkWidth + "," + y / chunkHeight)) {
+            loadedChunks.get(x / chunkWidth + "," + y / chunkHeight).getTerrain()[x % chunkWidth][y % chunkHeight] = index;
+            return;
+        }
+        Chunk c = new Chunk(x / chunkWidth, y / chunkHeight, chunkWidth, chunkHeight);
+        c.load();
+        String chunkKey = x / chunkWidth + "," + y / chunkHeight;
+        loadedChunks.put(chunkKey, c);
+        c.getTerrain()[x % chunkWidth][y % chunkHeight] = index;
+    }
+
     public static class Tile {
         public final Image sprite;
         public final boolean solid;
         public final String name;
+        public final Color color;
 
-        private Tile(Image sprite, boolean solid, String name) {
+        private Tile(Image sprite, boolean solid, String name, Color color) {
             this.sprite = sprite;
             this.solid = solid;
             this.name = name;
+            this.color = color;
         }
     }
 }

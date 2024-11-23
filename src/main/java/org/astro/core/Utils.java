@@ -1,5 +1,6 @@
 package org.astro.core;
 
+import java.io.Serializable;
 import java.util.Random;
 
 public class Utils {
@@ -28,4 +29,15 @@ public class Utils {
     public static int clamp(int x, int min, int max) {
         return Math.max(Math.min(x, max), min);
     }
+
+    public static class Pair<K, V> implements Serializable {
+        final K left;
+        final V right;
+        public Pair(K left, V right) {
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    public record Coords(int x, int y) implements Serializable {}
 }

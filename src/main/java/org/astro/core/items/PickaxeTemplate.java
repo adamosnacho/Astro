@@ -18,7 +18,16 @@ public class PickaxeTemplate extends ItemTemplate {
                             py >= breakableTile.y && py <= (breakableTile.y + breakableTile.height) && breakableTile.breakable) {
                         breakableTile.breakTile();
                         onPickaxeUsed(i, breakableTile);
-                        break;
+                        return;
+                    }
+                }
+                for (Utils.Coords coord : Building.placedTiles.keySet()) {
+                    if (coord.x() == px / 100 && coord.y() == py / 100) {
+                        Terrain.Tile t = Building.placedTiles.get(coord);
+                        if (Building.breakTile(coord.x(), coord.y())) {
+                            onPickaxeUsedTile(i, t);
+                            return;
+                        }
                     }
                 }
             }
@@ -41,6 +50,7 @@ public class PickaxeTemplate extends ItemTemplate {
     }
 
     public void onPickaxeUsed(Item i, BreakableTile bt) {}
+    public void onPickaxeUsedTile(Item i, Terrain.Tile t) {}
 
     public void onCreation(Item i) {}
 

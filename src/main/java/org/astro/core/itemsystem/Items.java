@@ -1,11 +1,10 @@
 package org.astro.core.itemsystem;
 
-import org.astro.core.Astro;
-import org.astro.core.PlayerInventory;
-import org.astro.core.Terrain;
+import org.astro.core.*;
 import org.astro.core.breakabletiles.*;
 import org.astro.core.items.*;
 import org.astro.core.items.LeadPickaxe;
+import org.newdawn.slick.Input;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +22,7 @@ public class Items {
         registerItem(new ItemTemplate("blueprint", "art/png/blueprint.png", new ItemEvents()));
         registerItem(new ItemTemplate("rope", "art/png/rope.png", new ItemEvents()));
         registerItem(new ItemTemplate("plank", "art/png/plank.png", new ItemEvents()));
+        registerItem(new ItemTemplate("matter", "art/png/matter.png", new ItemEvents()));
         registerItem(new Rock());
         registerItem(new ItemTemplate("ash", "art/png/ash.png", new ItemEvents() {
             @Override
@@ -78,6 +78,7 @@ public class Items {
             }
         }));
         registerItem(new LeadPickaxe());
+        registerItem(new AluminumPickaxe());
         registerItem(new Bag());
         registerItem(new ItemTemplate("chest", "art/png/chest.png", new ItemEvents() {
             @Override
@@ -105,6 +106,16 @@ public class Items {
                 int px = (int) (Astro.app.getInput().getMouseX() + Astro.astro.camera.x);
                 int py = (int) (Astro.app.getInput().getMouseY() + Astro.astro.camera.y);
                 new WoodWorkingTableTile(px, py);
+                PlayerInventory.hand.it.itemEvents.inHand(false, PlayerInventory.hand);
+                PlayerInventory.hand = null;
+            }
+        }));
+        registerItem(new ItemTemplate("matter_printer", "art/png/matterPrinterIcon.png", new ItemEvents() {
+            @Override
+            public void onUse(Item i) {
+                int px = (int) (Astro.app.getInput().getMouseX() + Astro.astro.camera.x);
+                int py = (int) (Astro.app.getInput().getMouseY() + Astro.astro.camera.y);
+                new MatterPrinterTile(px, py);
                 PlayerInventory.hand.it.itemEvents.inHand(false, PlayerInventory.hand);
                 PlayerInventory.hand = null;
             }
@@ -140,5 +151,6 @@ public class Items {
         registerItem(hammer);
         registerItem(new Torch());
         registerItem(new Stick());
+        registerItem(new ItemTemplate("building_hammer", "art/png/buildingHammer.png", new BuildingHammer()));
     }
 }
