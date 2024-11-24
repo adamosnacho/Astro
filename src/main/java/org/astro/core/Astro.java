@@ -33,6 +33,8 @@ public class Astro extends BasicGame {
         astro = this;
     }
 
+    private boolean firstRender = true;
+
     public static void main(String[] arguments) {
         try {
             app = new AppGameContainer(new Astro());
@@ -117,11 +119,21 @@ public class Astro extends BasicGame {
         Settings.update();
         CraftingRecipesMenu.update();
         camera.update();
+        Music.update();
     }
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException
     {
+        if (firstRender) {
+            g.setColor(Color.white);
+            g.fillRect(0, 0, camera.width, camera.height);
+            g.setColor(Color.black);
+            g.setFont(fontBig);
+            g.drawString("Loading...", camera.width / 2f - fontBig.getWidth("Loading...") / 2f, camera.height / 2f - fontBig.getHeight("Loading...") / 2f);
+            firstRender = false;
+            return;
+        }
         g.setFont(font);
         g.setBackground(new Color(255, 112, 0));
         camera.apply(g);

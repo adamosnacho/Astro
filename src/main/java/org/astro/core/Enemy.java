@@ -69,7 +69,7 @@ public class Enemy extends Entity {
         }
     }
 
-    private boolean isColliding(float x, float y, int width, int height) {
+    public boolean isColliding(float x, float y, int width, int height) {
         int step = 5; // Small interval between checks along each edge
         int padding = 1; // Padding to prevent clipping
 

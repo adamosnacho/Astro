@@ -26,6 +26,18 @@ public class PlayerInventory implements Save {
 
     public static Item held;
 
+    private static final Sound popSfx;
+    private static final Sound clickSfx;
+
+    static {
+        try {
+            popSfx = new Sound("sfx/pop.ogg");
+            clickSfx = new Sound("sfx/click.ogg");
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void init() {
         try {
             slotsSprite = new Image("art/png/gui/slots.png").getScaledCopy(guiScale);
@@ -150,6 +162,7 @@ public class PlayerInventory implements Save {
             hand = temp;
             if (hand != null) hand.it.itemEvents.inHand(true, hand);
             if (held == null) Astro.astro.player.canMove = true;
+            clickSfx.play(0.9f + Utils.randomRange(0, 10) / 100f, 0.5f);
         } else if (x >= paddingX + 19 * guiScale && y >= paddingY + 1 * guiScale &&
                 x <= paddingX + (19 + 16) * guiScale && y <= paddingY + (1 + 16) * guiScale) {
             if (slot1 != null) slot1.it.itemEvents.inHand(false, slot1);
@@ -158,6 +171,7 @@ public class PlayerInventory implements Save {
             slot1 = temp;
             if (slot1 != null) slot1.it.itemEvents.inHand(true, slot1);
             if (held == null) Astro.astro.player.canMove = true;
+            clickSfx.play(0.9f + Utils.randomRange(0, 10) / 100f, 0.5f);
         } else if (x >= paddingX + 1 * guiScale && y >= paddingY + 19 * guiScale &&
                 x <= paddingX + (1 + 16) * guiScale && y <= paddingY + (19 + 16) * guiScale) {
             if (slot2 != null) slot2.it.itemEvents.inHand(false, slot2);
@@ -166,6 +180,7 @@ public class PlayerInventory implements Save {
             slot2 = temp;
             if (slot2 != null) slot2.it.itemEvents.inHand(true, slot2);
             if (held == null) Astro.astro.player.canMove = true;
+            clickSfx.play(0.9f + Utils.randomRange(0, 10) / 100f, 0.5f);
         } else if (x >= paddingX + 19 * guiScale && y >= paddingY + 19 * guiScale &&
                 x <= paddingX + (19 + 16) * guiScale && y <= paddingY + (19 + 16) * guiScale) {
             if (slot3 != null) slot3.it.itemEvents.inHand(false, slot3);
@@ -174,10 +189,12 @@ public class PlayerInventory implements Save {
             slot3 = temp;
             if (slot3 != null) slot3.it.itemEvents.inHand(true, slot3);
             if (held == null) Astro.astro.player.canMove = true;
+            clickSfx.play(0.9f + Utils.randomRange(0, 10) / 100f, 0.5f);
         } else if (held != null) {
             held.drop(Astro.astro.player.x + Utils.randomRange(0, Astro.astro.player.width), Astro.astro.player.y + Astro.astro.player.height);
             held = null;
             Astro.astro.player.canMove = true;
+            popSfx.play(0.7f + Utils.randomRange(0, 20) / 100f, 0.5f);
         }
     }
 
@@ -225,18 +242,22 @@ public class PlayerInventory implements Save {
         if (hand == null) {
             hand = i;
             hand.it.itemEvents.inHand(true, hand);
+            popSfx.play(0.7f + Utils.randomRange(0, 20) / 100f, 0.5f);
             return true;
         }
         if (slot1 == null) {
             slot1 = i;
+            popSfx.play(0.7f + Utils.randomRange(0, 20) / 100f, 0.5f);
             return true;
         }
         if (slot2 == null) {
             slot2 = i;
+            popSfx.play(0.7f + Utils.randomRange(0, 20) / 100f, 0.5f);
             return true;
         }
         if (slot3 == null) {
             slot3 = i;
+            popSfx.play(0.7f + Utils.randomRange(0, 20) / 100f, 0.5f);
             return true;
         }
         return false;
@@ -246,6 +267,7 @@ public class PlayerInventory implements Save {
         if (hand != null) {
             hand.drop(Astro.astro.player.x + Utils.randomRange(0, Astro.astro.player.width), Astro.astro.player.y + Astro.astro.player.height);
             hand = null;
+            popSfx.play(0.7f + Utils.randomRange(0, 20) / 100f, 0.5f);
         }
     }
 

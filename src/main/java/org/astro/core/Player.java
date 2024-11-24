@@ -4,6 +4,8 @@ import org.astro.core.lighting.LightManager;
 import org.astro.core.saving.Save;
 import org.astro.core.saving.Saving;
 import org.newdawn.slick.*;
+import org.newdawn.slick.openal.SoundStore;
+import org.newdawn.slick.tests.SoundTest;
 
 import java.io.Serializable;
 import java.nio.channels.Pipe;
@@ -23,6 +25,8 @@ public class Player extends Entity implements Save {
 
     private final LightManager.Light light;
 
+    private final Sound playerWalkSfx;
+
     public Player() {
         z = 1;
         height = 144;
@@ -38,6 +42,11 @@ public class Player extends Entity implements Save {
         Saving.save.add(this);
         light = new LightManager.Light(x, y, 600, 1.5f, 0.7f);
         LightManager.lights.add(light);
+        try {
+            playerWalkSfx = new Sound("sfx/playerStep.ogg");
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Player(Object o) {
@@ -63,6 +72,11 @@ public class Player extends Entity implements Save {
         Saving.save.add(this);
         light = new LightManager.Light(x, y, 600, 1.5f, 0.7f);
         LightManager.lights.add(light);
+        try {
+            playerWalkSfx = new Sound("sfx/playerStep.ogg");
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -130,6 +144,7 @@ public class Player extends Entity implements Save {
         animationFrame++;
         animationFrame = animationFrame > 3 ? 0 : animationFrame;
         animationTimer = 0;
+        if (animationFrame % 4 == 0) playerWalkSfx.play(Utils.randomRange(5, 10) / 10f, 0.9f);
     }
 
     public void move(float dx, float dy) {

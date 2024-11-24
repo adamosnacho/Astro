@@ -30,7 +30,9 @@ public class BreakableTile extends Entity {
         Object data = onTileBreak();
         Astro.astro.deSpawn(this);
         tiles.remove(this);
-        Item di = new Item(drop, x + Utils.randomRange(0, width), y + Utils.randomRange(0, height));
-        di.itemData = data;
+        if (drop != null) {
+            Item di = new Item(drop, x + Utils.randomRange(0, width), y + Utils.randomRange(0, height));
+            di.itemData = data;
+        }
     }
 }

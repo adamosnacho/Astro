@@ -1,5 +1,6 @@
 package org.astro.core.enemies;
 
+import jdk.jshell.execution.Util;
 import org.astro.core.Astro;
 import org.astro.core.ClassSettings;
 import org.astro.core.Enemy;
@@ -34,6 +35,9 @@ public class Alien extends Enemy implements Save {
     private boolean attacking = false;
     private boolean hit = false;
 
+    private final Sound alienWalk;
+    private final Sound alienHit;
+
     public Alien(float x, float y) {
         width = 99;
         height = 144;
@@ -52,6 +56,12 @@ public class Alien extends Enemy implements Save {
         this.y = y;
         hitColor = new Color(38, 110, 14);
         Saving.save.add(this);
+        try {
+            alienWalk = new Sound("sfx/playerStep.ogg");
+            alienHit = new Sound("sfx/hit.ogg");
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Alien(Object o) {
@@ -74,6 +84,12 @@ public class Alien extends Enemy implements Save {
         hp = d.hp;
         hitColor = new Color(38, 110, 14);
         Saving.save.add(this);
+        try {
+            alienWalk = new Sound("sfx/playerStep.ogg");
+            alienHit = new Sound("sfx/hit.ogg");
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -110,6 +126,7 @@ public class Alien extends Enemy implements Save {
 
                 if (!returning && isPlayerInRange(spearAttackDistance) && !hit) {
                     attackPlayer();
+                    alienHit.play(0.5f + Utils.randomRange(0, 50) / 100f, 0.2f);
                     hit = true;
                 }
             }
@@ -139,7 +156,7 @@ public class Alien extends Enemy implements Save {
             return pa;
         }, 10);
         Astro.astro.player.suitWear -= spearDamage;
-        Astro.astro.camera.shake(4, 0.4f);
+        Astro.astro.camera.shake(4, 1.5f);
     }
 
     @Override
@@ -160,6 +177,11 @@ public class Alien extends Enemy implements Save {
         animationFrame++;
         animationFrame = animationFrame > 3 ? 0 : animationFrame;
         animationTimer = 0;
+        if (animationFrame % 4 == 0) {
+            float distance = Utils.distance(x, y, Astro.astro.player.x, Astro.astro.player.y);
+            float volume = Math.max(0, 1 - (distance / 1000)); // Ensure volume is between 0 and 1
+            alienWalk.play(Utils.randomRange(5, 10) / 10f, volume * 0.8f);
+        }
     }
 
     @Override

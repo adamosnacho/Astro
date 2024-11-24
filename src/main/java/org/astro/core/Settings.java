@@ -5,6 +5,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.openal.SoundStore;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -53,6 +54,9 @@ public class Settings {
         }));
         Settings.addSetting(new Settings.Category("Help"));
         Settings.addSetting(new Settings.Setting<>("Show Instructions", true, use -> PlayerInventory.showInstructions = use));
+        Settings.addSetting(new Settings.Category("Audio"));
+        Settings.addSetting(new Settings.Setting<>("Sound volume", 10, vol -> { SoundStore.get().setSoundVolume(vol / 10f);}));
+        Settings.addSetting(new Settings.Setting<>("Music volume", 10, vol -> { SoundStore.get().setMusicVolume(vol / 10f);}));
         loadSetting();
     }
 

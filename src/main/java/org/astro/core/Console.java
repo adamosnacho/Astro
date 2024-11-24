@@ -121,5 +121,6 @@ public class Console {
             Astro.astro.player.y = Float.parseFloat(t[2]);
         }
         if (t[0].contains("time")) TimeManager.time = Float.parseFloat(t[1]);
+        if (t[0].contains("track")) Music.playTrack(Integer.parseInt(t[1]));
     }
 }

@@ -26,6 +26,16 @@ public class MatterPrinterTile extends BreakableTile implements Save {
     private final Image slotSprite;
     private String selectedTile = "";
 
+    private static final Sound popSfx;
+
+    static {
+        try {
+            popSfx = new Sound("sfx/pop.ogg");
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public MatterPrinterTile(float x, float y) {
         super(x, y, Items.items.get("matter_printer"));
         try {
@@ -122,16 +132,7 @@ public class MatterPrinterTile extends BreakableTile implements Save {
 
     @Override
     public void onInteract() {
-        boolean heated = false;
-
-        for (BreakableTile bt : tiles) {
-            if (bt.x == x && bt.y == y + 100 && bt instanceof FireTile) {
-                heated = true;
-                break;
-            }
-        }
-
-        if (pickMenu || !heated) return;
+        if (pickMenu) return;
         if (PlayerInventory.hand == null) {
             if (buildingHammer != null) {
                 PlayerInventory.hand = buildingHammer;
@@ -151,6 +152,7 @@ public class MatterPrinterTile extends BreakableTile implements Save {
                 data.tileCount = 0;
                 data.tileName = "";
             }
+            popSfx.play(0.7f + Utils.randomRange(0, 20) / 100f, 0.8f);
         } else if (Objects.equals(PlayerInventory.hand.it.name, "matter")) {
             if (!Objects.equals(selectedTile, "") && buildingHammer != null) {
                 PlayerInventory.hand.it.itemEvents.inHand(false, PlayerInventory.hand);
@@ -158,7 +160,8 @@ public class MatterPrinterTile extends BreakableTile implements Save {
                 ((BuildingHammer.Data) buildingHammer.itemData).tileCount++;
                 ((BuildingHammer.Data) buildingHammer.itemData).tileName = selectedTile;
                 matterParticles(x + 30, y + 25);
-                Astro.astro.camera.shake(3f, 0.2f);
+                Astro.astro.camera.shake(3f, 0.5f);
+                popSfx.play(0.7f + Utils.randomRange(0, 20) / 100f, 0.8f);
             }
         }
     }
@@ -201,17 +204,8 @@ public class MatterPrinterTile extends BreakableTile implements Save {
 
     @Override
     public String getInfo() {
-        boolean heated = false;
-
-        for (BreakableTile bt : tiles) {
-            if (bt.x == x && bt.y == y + 100 && bt instanceof FireTile) {
-                heated = true;
-                break;
-            }
-        }
-
-        if (!heated) return "Not heated! Place fire under matter printer.";
-        return "";
+        if (!Objects.equals(selectedTile, "")) return "Building tile " + selectedTile + "\nAmount printed " + ((BuildingHammer.Data) buildingHammer.itemData).tileCount;
+        return "Idle";
     }
 
     private record Data(float x, float y) implements Serializable {}

@@ -19,7 +19,7 @@ public class Utils {
 
     public static int randomRange(int min, int max) {
         Random random = new Random();
-        return random.nextInt(max - min) + min; // Generates a number in the range [min, max)
+        return random.nextInt((max + 1) - min) + min; // Generates a number in the range [min, max]
     }
 
     public static float clamp(float x, float min, float max) {
@@ -28,6 +28,12 @@ public class Utils {
 
     public static int clamp(int x, int min, int max) {
         return Math.max(Math.min(x, max), min);
+    }
+
+    public static float distance(float x1, float y1, float x2, float y2) {
+        float dx = x1 - x2;
+        float dy = y1 - y2;
+        return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
     public static class Pair<K, V> implements Serializable {
