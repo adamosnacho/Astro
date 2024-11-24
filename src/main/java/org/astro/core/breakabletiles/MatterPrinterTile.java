@@ -132,16 +132,7 @@ public class MatterPrinterTile extends BreakableTile implements Save {
 
     @Override
     public void onInteract() {
-        boolean heated = false;
-
-        for (BreakableTile bt : tiles) {
-            if (bt.x == x && bt.y == y + 100 && bt instanceof FireTile) {
-                heated = true;
-                break;
-            }
-        }
-
-        if (pickMenu || !heated) return;
+        if (pickMenu) return;
         if (PlayerInventory.hand == null) {
             if (buildingHammer != null) {
                 PlayerInventory.hand = buildingHammer;
@@ -213,17 +204,8 @@ public class MatterPrinterTile extends BreakableTile implements Save {
 
     @Override
     public String getInfo() {
-        boolean heated = false;
-
-        for (BreakableTile bt : tiles) {
-            if (bt.x == x && bt.y == y + 100 && bt instanceof FireTile) {
-                heated = true;
-                break;
-            }
-        }
-
-        if (!heated) return "Not heated! Place fire under matter printer.";
-        return "";
+        if (!Objects.equals(selectedTile, "")) return "Building tile " + selectedTile + "\nAmount printed " + ((BuildingHammer.Data) buildingHammer.itemData).tileCount;
+        return "Idle";
     }
 
     private record Data(float x, float y) implements Serializable {}

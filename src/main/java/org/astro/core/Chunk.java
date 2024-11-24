@@ -91,9 +91,14 @@ public class Chunk {
                 newTerrain[x][y] = Math.max(0, Math.min(tileSize - 1, noiseValue));
             }
         }
-        if (Utils.randomRange(0, 4) == 0) new Item(Items.items.get("rock"), (chunkX * Terrain.chunkWidth + Utils.randomRange(0, chunkWidth)) * tileWidth, (chunkY * chunkHeight + Utils.randomRange(0, chunkHeight)) * tileHeight);
-        if (Utils.randomRange(0, 4) == 0) new Item(Items.items.get("stick"), (chunkX * Terrain.chunkWidth + Utils.randomRange(0, chunkWidth)) * tileWidth, (chunkY * chunkHeight + Utils.randomRange(0, chunkHeight)) * tileHeight);
-        if (Utils.randomRange(0, 3) == 0) new Alien((chunkX * Terrain.chunkWidth + Utils.randomRange(0, chunkWidth)) * tileWidth, (chunkY * chunkHeight + Utils.randomRange(0, chunkHeight)) * tileHeight);
+        int cPosX = Utils.randomRange(0, chunkWidth - 1);
+        int cPosY = Utils.randomRange(0, chunkHeight - 1);
+
+        if (tiles.get(newTerrain[cPosX][cPosY]).solid) return newTerrain;
+
+        if (Utils.randomRange(0, 4) == 0) new Item(Items.items.get("rock"), (chunkX * Terrain.chunkWidth + cPosX) * tileWidth, (chunkY * chunkHeight + cPosY) * tileHeight);
+        if (Utils.randomRange(0, 4) == 0) new Item(Items.items.get("stick"), (chunkX * Terrain.chunkWidth + cPosX) * tileWidth, (chunkY * chunkHeight + cPosY) * tileHeight);
+        if (Utils.randomRange(0, 3) == 0) new Alien((chunkX * Terrain.chunkWidth + cPosX) * tileWidth, (chunkY * chunkHeight + cPosY) * tileHeight);
         return newTerrain;
     }
 }
