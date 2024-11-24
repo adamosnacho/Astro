@@ -68,7 +68,7 @@ public class FireTile extends BreakableTile implements Save {
     public void update() {
         timeLeft -= Astro.delta;
         if (timeLeft <= 0) {
-            Astro.astro.deSpawn(this);
+            breakTile();
             new AshTile(x, y);
             return;
         }

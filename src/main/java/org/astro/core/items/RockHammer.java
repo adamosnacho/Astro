@@ -1,13 +1,12 @@
 package org.astro.core.items;
 
 import org.astro.core.*;
+import org.astro.core.Input;
 import org.astro.core.itemsystem.Item;
 import org.astro.core.itemsystem.ItemEvents;
 import org.astro.core.particlesystem.Particle;
 import org.astro.core.particlesystem.ParticleGroup;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +17,17 @@ public class RockHammer extends ItemEvents {
     public static final float speed = ClassSettings.loadFloat("rock hammer/speed", 0.1f);
     public static final float rotationSpeed = ClassSettings.loadFloat("rock hammer/rotation speed", 0.7f);
     public static final float returnSpeed = ClassSettings.loadFloat("rock hammer/return speed", 0.01f);
+
+    private static final Sound hitSfx;
+    private static final Sound swingSfx;
+    static {
+        try {
+            hitSfx = new Sound("sfx/build.ogg");
+            swingSfx = new Sound("sfx/swing.ogg");
+        } catch (SlickException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void onInstantiation(Item i) {
@@ -63,7 +73,8 @@ public class RockHammer extends ItemEvents {
                 }, 10);
                 hs.hit = true;
                 enemy.hp -= damage;
-                Astro.astro.camera.shake(2, 0.5f);
+                Astro.astro.camera.shake(2.5f, 1f);
+                hitSfx.play(0.5f + Utils.randomRange(0, 50) / 100f, 1f);
             }
         }
     }
@@ -111,11 +122,13 @@ public class RockHammer extends ItemEvents {
         hs.rotation = 0;
         hs.time = 0;
         hs.hit = false;
-
         if (hs.wear <= 0) {
             PlayerInventory.hand.it.itemEvents.inHand(false, PlayerInventory.hand);
             PlayerInventory.hand = null;
+            return;
         }
+
+        swingSfx.play(0.9f + Utils.randomRange(0, 10) / 100f, 1f);
     }
 
     private static class HammerStorage implements Serializable {

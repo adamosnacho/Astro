@@ -121,5 +121,11 @@ public class Console {
             Astro.astro.player.y = Float.parseFloat(t[2]);
         }
         if (t[0].contains("time")) TimeManager.time = Float.parseFloat(t[1]);
+        if (t[0].contains("track")) {
+            Music.track = Music.tracks.get(Integer.parseInt(t[1]) - 1).left;
+            Music.track.play();
+            Music.track.setVolume(0);
+            Music.track.fade(ClassSettings.loadInt("music/fade duration", 1500), Music.tracks.get(Integer.parseInt(t[1]) - 1).right, false);
+        }
     }
 }
