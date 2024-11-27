@@ -1,2 +1,2 @@
-world=world-1
+world=world
 seed=80085
