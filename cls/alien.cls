@@ -5,3 +5,5 @@ spear attack speed===1.0
 spear return speed===0.1
 spear attack travel===50.0
 animation speed===200.0
+drop===matter
+drop chance===3

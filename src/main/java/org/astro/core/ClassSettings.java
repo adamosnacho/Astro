@@ -29,6 +29,17 @@ public class ClassSettings {
         return loadSetting(loc, String.valueOf(def), Integer::parseInt);
     }
 
+    /**
+     * Loads an string value from a class setting file. If the value is not present, writes the default value to the file.
+     *
+     * @param loc Location of the setting in the form "dir1/dir2/option"
+     * @param def Default value to use if the setting is not found
+     * @return The loaded string value or the default value
+     */
+    public static String loadString(String loc, String def) {
+        return loadSetting(loc, def, (String v) -> v);
+    }
+
     private static <T> T loadSetting(String loc, String defaultValue, ValueParser<T> parser) {
         try {
             // Parse directory and setting name

@@ -23,6 +23,9 @@ public class Alien extends Enemy implements Save {
     public float animationSpeed = ClassSettings.loadFloat("alien/animation speed", 200f); // speed of the walking animation
     public int animationFrame = 0;
 
+    public static final String dropName = ClassSettings.loadString("alien/drop", "matter");
+    public static final int dropChance = ClassSettings.loadInt("alien/drop chance", 3);
+
     public static final float spearDamage = ClassSettings.loadFloat("alien/spear damage", 12f);
     public static final float spearAttackInterval = ClassSettings.loadFloat("alien/spear attack interval", 500f);; // time in ms
     public static final float spearAttackDistance = ClassSettings.loadFloat("alien/spear attack distance", 180f);; // time in ms
@@ -187,7 +190,7 @@ public class Alien extends Enemy implements Save {
     @Override
     public void finishDie() {
         Astro.astro.deSpawn(this);
-        if (Utils.randomRange(0, 3) == 0) new Item(Items.items.get("rock"), x + Utils.randomRange(0, width - 40), y + Utils.randomRange(0, height - 40));
+        if (Utils.randomRange(0, dropChance) == 0) new Item(Items.items.get(dropName), x + Utils.randomRange(0, width - 40), y + Utils.randomRange(0, height - 40));
     }
 
     @Override
